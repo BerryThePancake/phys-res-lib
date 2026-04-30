@@ -1,0 +1,59 @@
+PhysResidual v0.1 - Library contract and research notes
+=======================================================
+
+1. What this library is
+-------------------------
+physresidual is a thin numerical layer: deterministic loops, no heap allocation
+inside the kernels, C99. It is intended as a building block for cyber-physical
+anomaly pipelines (e.g., feature extraction before a small classifier).
+
+It is NOT: a MATPOWER binding, a topology-aware power-flow solver, or a SCADA stack.
+
+
+2. Power-balance residual (phys_power_balance_residual)
+-------------------------------------------------------
+Definition implemented in code:
+  r[i] = sum_j P[i,j]
+where P is the caller-supplied row-major matrix.
+
+Interpretation (documentation contract, not enforced in code):
+  If columns are net injections that must sum to zero at steady state under YOUR
+  model, r[i] is a scalar summary of violation of that conservation-style constraint.
+  The library does not know bus topology, line flows, or per-unit bases.
+
+Validation against IEEE test cases is OUT OF SCOPE for v0.1; any such validation
+must be added by the project with a reference power-flow stack and cited datasets.
+
+
+3. Measurement residual (phys_measurement_residual_l2)
+--------------------------------------------------------
+r[i] = || y[i,:] - hx[i,:] ||_2
+Caller supplies hx (e.g., from a linearized estimator). No state estimation is
+performed inside this library.
+
+
+4. ABI and real-time claims
+---------------------------
+- No malloc/free in src/physresidual.c hot paths.
+- Worst-case cost: O(n_samples * n_buses) for power balance; O(n_samples * n_meas)
+  for L2 innovation.
+- MISRA-C / WCET certification: not claimed in v0.1. For RTOS targets, wrap with
+  your toolchain analysis and (optionally) replace libc math in sqrt with a
+  bounded substitute if required.
+
+
+5. Reproducibility (research)
+-----------------------------
+See python/shift_study.py and scripts/reproduce_experiment.ps1. The synthetic study
+defines distribution shift EXPLICITLY in the script header and prints all seeds
+and hyperparameters. It is a toy lab harness, not a substitute for MATPOWER or
+published ICS datasets.
+
+
+6. Suggested references (grounding)
+----------------------------------
+[1] Liu et al., physics-informed ML for grid anomaly detection (IEEE TSG, 2022).
+[2] Scholkopf et al., causal representation learning (Proc. IEEE, 2021).
+[3] Zimmerman et al., MATPOWER (IEEE TPWRS, 2011).
+[4] ORNL / cyber-physical power system testbed datasets (as applicable).
+[5] MISRA-C:2012 (if targeting safety-critical deployment).

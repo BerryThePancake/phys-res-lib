@@ -1,0 +1,6 @@
+# Python 3.11+ (tested on 3.12/3.13). For paper submission, freeze after a green run:
+#   pip install -r python/requirements.txt
+#   pip freeze > python/requirements-lock.txt
+numpy>=1.26.4,<3
+scikit-learn>=1.4.0
+scipy>=1.11.0

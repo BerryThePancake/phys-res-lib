@@ -1,0 +1,3 @@
+# sample net injections (rows = samples, cols = buses); power CLI infers cols=3
+10,-3,-7
+10,-3,-5

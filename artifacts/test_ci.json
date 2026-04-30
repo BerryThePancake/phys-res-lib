@@ -1,0 +1,66 @@
+{
+  "args": {
+    "seed": 0,
+    "n_train": 8000,
+    "n_cal": 4000,
+    "n_test": 8000,
+    "n_buses": 16,
+    "visible_buses": 3,
+    "train_noise_std": 0.12,
+    "test_noise_std": 0.55,
+    "test_noise_mean": 0.0,
+    "drift_scale": 1.35,
+    "anomaly_frac": 0.1,
+    "fault_mag": 2.2,
+    "cal_fpr": 0.02,
+    "json_out": "artifacts/test_ci.json"
+  },
+  "mode": "visible buses = 3 (power-balance residual from all 16 buses)",
+  "metrics": {
+    "cal_raw": {
+      "name": "raw-only",
+      "roc_auc": 0.5840979166666667,
+      "auc_pr": 0.16050309996001566,
+      "far": 0.45611111111111113,
+      "fnr": 0.4425,
+      "precision": 0.1195710455764075,
+      "recall": 0.5575,
+      "f1": 0.1969094922737307
+    },
+    "cal_aug": {
+      "name": "raw+|sum|",
+      "roc_auc": 0.9984493055555556,
+      "auc_pr": 0.991476499778017,
+      "far": 0.010833333333333334,
+      "fnr": 0.025,
+      "precision": 0.9090909090909091,
+      "recall": 0.975,
+      "f1": 0.9408926417370326
+    },
+    "test_raw": {
+      "name": "raw-only",
+      "roc_auc": 0.5721692708333332,
+      "auc_pr": 0.13821538377220477,
+      "far": 0.8419444444444445,
+      "fnr": 0.12,
+      "precision": 0.10404966006503104,
+      "recall": 0.88,
+      "f1": 0.18609569125033043
+    },
+    "test_aug": {
+      "name": "raw+|sum|",
+      "roc_auc": 0.6499747395833333,
+      "auc_pr": 0.20545464317361634,
+      "far": 0.5875,
+      "fnr": 0.2425,
+      "precision": 0.12531017369727046,
+      "recall": 0.7575,
+      "f1": 0.2150461320085167
+    }
+  },
+  "mcnemar": {
+    "p_value": 1.8982597398926243e-194,
+    "b01_raw_ok_aug_fail": 830,
+    "b10_aug_ok_raw_fail": 2564
+  }
+}

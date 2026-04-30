@@ -1,0 +1,40 @@
+physresidual - build notes
+==========================
+
+Requirements: CMake 3.16+, a C99 compiler (MSVC, Clang, GCC).
+
+  cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+  cmake --build build --config Release
+
+Outputs (names depend on platform):
+  - Shared library: build/Release/physresidual.dll (MSVC) or build/libphysresidual.so
+  - Static library: physresidual.lib / libphysresidual.a
+  - Example: build/Release/example_power.exe
+  - CLI: build/Release/physresidual_cli.exe (CMake) or dist\physresidual_cli.exe (batch)
+
+Portable Windows CLI (static CRT /MT with MSVC batch script; no separate DLL at runtime):
+  scripts\build_portable_cli.bat
+  Output: dist\physresidual_cli.exe
+
+CLI quick reference:
+  physresidual_cli help | version | selftest
+  physresidual_cli power --in file.csv [--cols B] [-o -] [--out file] [--abs]
+    (omit --cols to infer column count from the first data line; UTF-8 BOM and # lines OK)
+  physresidual_cli measurement-l2 --y y.csv --hx hx.csv [--cols M] [-o out.txt]
+  physresidual_cli append-column --matrix m.csv --values v.txt [--cols-in K] [-o out.csv]
+
+The CLI sets the "C" locale for stable decimal parsing on all Windows region settings.
+
+API / physics contract (read before citing in a paper):
+  docs\physresidual_api.txt
+  include\physresidual.h (Doxygen-style comments)
+
+Python experiment (synthetic shift study; version ranges in python/requirements.txt):
+  pip install -r python\requirements.txt
+  powershell -ExecutionPolicy Bypass -File scripts\reproduce_experiment.ps1
+  (optional reproducibility snapshot: pip freeze > python\requirements-lock.txt)
+  set PHYSRESIDUAL_DLL=build\Release\physresidual.dll   (optional, Windows)
+
+Ablation: pass --visible-buses N with N equal to --n-buses for full raw observability.
+
+CI: .github\workflows\ci.yml (build + cppcheck soft gate on Linux).
