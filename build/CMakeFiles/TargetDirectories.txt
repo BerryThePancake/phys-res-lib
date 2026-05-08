@@ -1,0 +1,6 @@
+C:/Users/austi/my-heroui-app/phys-res-lib/build/CMakeFiles/physresidual.dir
+C:/Users/austi/my-heroui-app/phys-res-lib/build/CMakeFiles/physresidual_static.dir
+C:/Users/austi/my-heroui-app/phys-res-lib/build/CMakeFiles/example_power.dir
+C:/Users/austi/my-heroui-app/phys-res-lib/build/CMakeFiles/physresidual_cli.dir
+C:/Users/austi/my-heroui-app/phys-res-lib/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/austi/my-heroui-app/phys-res-lib/build/CMakeFiles/ZERO_CHECK.dir
